@@ -12,7 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 // routes
-require('./server/routes/user.route')(app);
+require('./server/routes/user.route')(app)
 
 const port = process.env.port
-app.listen(port, () => console.log('server is runnin yo'))
+app.listen(port, () => console.log('server is runnin yo')) 

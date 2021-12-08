@@ -12,25 +12,26 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        // unique: true,
-        // validate: [
-        //     val => /^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(val),
-        //     "Please enter a valid email"
-        // ]
+        unique: true,
+        validate: [
+            val => /^([\w-\.]+@([\w-]+\.)+[\w-]+)?$/.test(val),
+            "Please enter a valid email"
+        ]
     },
     password: {
         type: String,
-        minlength: [6, 'Password must be at least 8 characters']
+        minlength: [6, 'Password must be at least 6 characters']
     }
 }, {timestamps: true})
 
 // creates a virtual object - wont save into database
 UserSchema.virtual('confirmPassword')
-    .get(() => this._confirmPassword)
-    .set((value) => (this._confirmPassword = value));
+    .get(() => this._confirmPassword, )
+    .set(value => this._confirmPassword = value);
 
 // middleware to validate virtual password with password
-UserSchema.pre('validate', function (next) {
+UserSchema.pre('validate', function(next) {
+    console.log('validating password')
     if (this.password !== this.confirmPassword) {
         this.invalidate('confirmPassword', 'Passwords do not match');
     }
@@ -38,11 +39,13 @@ UserSchema.pre('validate', function (next) {
 });
 
 // hashes the password
-UserSchema.pre('save', function (next) {
-    bcrypt.hash(this.password, 10).then((hash) => {
+UserSchema.pre('save', function(next) {
+    console.log('hashing password')
+    bcrypt.hash(this.password, 10)
+    .then(hash => {
         this.password = hash;
         next();
     });
 });
 
-module.exports.User = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);
