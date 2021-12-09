@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 require('dotenv').config()
 const app = express();
 
@@ -7,7 +8,8 @@ const app = express();
 require('./server/config/mongoose.config')
 
 // middleware
-app.use(cors())
+app.use(cookieParser())
+app.use(cors({credentials:true, origin: 'http://localhost:3000'}))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
