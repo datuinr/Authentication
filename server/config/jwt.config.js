@@ -5,6 +5,6 @@ module.exports.authenticate = (req, res, next) => {
         jwt.verify(req.cookies.token, process.env.secret_key)
         next()
     } catch(e) {
-        res.status(401).json({verified: false})
+        res.status(401).json({message: 'Unauthorized access'})
     }
 }

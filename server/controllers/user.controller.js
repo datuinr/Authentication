@@ -47,5 +47,10 @@ module.exports = {
                 .status(400)
                 .json({message: errorMessage})
         }
+    },
+
+    logout(_, res) {
+        res.clearCookie('token');
+        res.json({status: 'Success'});
     }
 }
